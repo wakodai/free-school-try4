@@ -9,7 +9,7 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 ## Progress
 
 - [x] (2026-01-06 15:45Z) ExecPlan下書きを作成し、PLANS.mdに従う運用方針を記載。
-- [ ] (2026-01-06 16:40Z) Next.js/TypeScript/Reactベースのプロジェクトをセットアップし、ローカル(devcontainer)で起動確認できる状態にする。完了部分: App Router構成のソース/設定ファイル、Tailwind設定、devcontainerと環境変数テンプレートを追加。残課題: npm registry がプロキシで403になるため依存取得・起動確認が未完。接続可能になり次第 `npm install` と `npm run dev` で検証する。
+- [x] (2026-01-06 16:46Z) Next.js/TypeScript/Reactベースのプロジェクトをセットアップし、ローカル(devcontainer)で起動確認できる状態にする。npm registry 403 解消後に `npm install` が完了し、`npm run lint` も通過。`npm run dev` 起動時に外部へのバージョンチェックが ENETUNREACH で失敗するログが出るがサーバー自体は Ready になることを確認。
 - [ ] Supabaseスキーマ（保護者・児童・出欠・メッセージログ）を定義し、適用手順と環境変数管理を整える。
 - [ ] LINE LIFF用フロントエンド（本番向け）と模擬フロントエンド（ローカル検証向け）を実装し、出欠申請APIと接続する。
 - [ ] ダッシュボードSPAを実装し、一覧・統計・メッセージ送受信UIを提供する。模擬フロントエンドへのリンクを目立たない形で配置する。
@@ -19,6 +19,10 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 
 - Observation: npm registry へのアクセスがプロキシ経由で 403 を返し、`npm view`/`npm create next-app`/`curl` いずれも失敗した。
   Evidence: `curl -I https://registry.npmjs.org/` が `HTTP/1.1 403 Forbidden` を返却。npm コマンドも同様に 403 が表示された。
+- Observation: `npm run dev` 時に Next.js が外部へバージョン情報取得を試み、ネットワーク疎通不可 (ENETUNREACH) で `TypeError: fetch failed` を出力するが、その後 Ready まで進む。
+  Evidence: dev 起動ログに ENETUNREACH のスタックトレースが出た後に "Ready in 2.5s" が表示された（2026-01-06 実行）。
+- Observation: `npm run lint` で TypeScript 5.5.4 が @typescript-eslint の公式サポート範囲外という警告が表示される。
+  Evidence: lint 実行ログに SUPPORTED TYPESCRIPT VERSIONS >=4.7.4 <5.5.0, YOUR TYPESCRIPT VERSION 5.5.4 と出力（2026-01-06 実行）。
 
 ## Decision Log
 
@@ -154,3 +158,4 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 
 Updates:
 - 2026-01-06: Progress/Surprises/Decisionを更新。npm registry 403 により create-next-app が利用できず、手動で初期セットアップを記述したことを追記。
+- 2026-01-06: npm install 完了と dev/lint 実行結果に伴う気づきを Progress / Surprises に反映。
