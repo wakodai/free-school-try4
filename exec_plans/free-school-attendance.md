@@ -120,6 +120,7 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 - （本番）LIFF `/liff` から同様に送信でき、line_user_id 経由で guardians と紐づく。
 - message_logs のGETで最新メッセージが確認でき、POSTでアウトバウンドメッセージが記録される（ローカルはスタブ、本番はLINE送信）。
 - lint/test が通過し、主要UIがSSR/SPAともにビルド成功している（`npm run build` 成功）。
+- Acceptance を満たしたら、スクショを添えて完了報告。
 
 ## Idempotence and Recovery
 
