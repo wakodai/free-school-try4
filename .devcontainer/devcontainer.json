@@ -1,13 +1,15 @@
 {
   "name": "free-school-try4",
-  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-20",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
     }
   },
+  "remoteUser": "node",
+  "postCreateCommand": "npm install",
+  "mounts": ["source=${localEnv:HOME}/.codex,target=/workspaces/free-school-try4/.codex,type=bind,consistency=cached"],
   "containerEnv": {
-    "CODEX_HOME": "${containerWorkspaceFolder}/.codex"
-  },
-  "remoteUser": "vscode"
+    "CODEX_HOME": "/workspaces/free-school-try4/.codex"
+  }
 }

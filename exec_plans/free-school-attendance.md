@@ -9,7 +9,7 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 ## Progress
 
 - [x] (2026-01-06 15:45Z) ExecPlan下書きを作成し、PLANS.mdに従う運用方針を記載。
-- [ ] Next.js/TypeScript/Reactベースのプロジェクトをセットアップし、ローカル(devcontainer)で起動確認できる状態にする。
+- [ ] (2026-01-06 16:40Z) Next.js/TypeScript/Reactベースのプロジェクトをセットアップし、ローカル(devcontainer)で起動確認できる状態にする。完了部分: App Router構成のソース/設定ファイル、Tailwind設定、devcontainerと環境変数テンプレートを追加。残課題: npm registry がプロキシで403になるため依存取得・起動確認が未完。接続可能になり次第 `npm install` と `npm run dev` で検証する。
 - [ ] Supabaseスキーマ（保護者・児童・出欠・メッセージログ）を定義し、適用手順と環境変数管理を整える。
 - [ ] LINE LIFF用フロントエンド（本番向け）と模擬フロントエンド（ローカル検証向け）を実装し、出欠申請APIと接続する。
 - [ ] ダッシュボードSPAを実装し、一覧・統計・メッセージ送受信UIを提供する。模擬フロントエンドへのリンクを目立たない形で配置する。
@@ -17,12 +17,14 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 
 ## Surprises & Discoveries
 
-- なし（作業開始前）。
+- Observation: npm registry へのアクセスがプロキシ経由で 403 を返し、`npm view`/`npm create next-app`/`curl` いずれも失敗した。
+  Evidence: `curl -I https://registry.npmjs.org/` が `HTTP/1.1 403 Forbidden` を返却。npm コマンドも同様に 403 が表示された。
 
 ## Decision Log
 
 - Vercel + Next.js(App Router) + Supabase(PostgreSQL) + TypeScript/React を採用する。理由: 無料/低コスト運用と要件適合。(2026-01-06)
 - 認証は当面スキップし、ガーディアン識別は LINE userId（LIFF）または模擬UI側の入力で代替し、将来Authを挿入できるようAPI層を抽象化する。(2026-01-06)
+- npm registry への接続が 403 でブロックされているため、create-next-app での自動生成を断念し、手動で Next.js + Tailwind 構成ファイルとApp Router用の初期ページを作成する方針に切り替えた。接続回復後に `npm install` で依存を取得する。(2026-01-06)
 
 ## Outcomes & Retrospective
 
@@ -149,3 +151,6 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 - UI コンポーネント:
   - components/attendance-form.tsx props: guardian, students, defaultDate, onSubmit(result)。
   - ダッシュボードカード: components/stats-card.tsx for displaying totals。
+
+Updates:
+- 2026-01-06: Progress/Surprises/Decisionを更新。npm registry 403 により create-next-app が利用できず、手動で初期セットアップを記述したことを追記。
