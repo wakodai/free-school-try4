@@ -10,7 +10,9 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
 
 - [x] (2026-01-06 15:45Z) ExecPlan下書きを作成し、PLANS.mdに従う運用方針を記載。
 - [x] (2026-01-06 16:46Z) Next.js/TypeScript/Reactベースのプロジェクトをセットアップし、ローカル(devcontainer)で起動確認できる状態にする。npm registry 403 解消後に `npm install` が完了し、`npm run lint` も通過。`npm run dev` 起動時に外部へのバージョンチェックが ENETUNREACH で失敗するログが出るがサーバー自体は Ready になることを確認。
-- [ ] Supabaseスキーマ（保護者・児童・出欠・メッセージログ）を定義し、適用手順と環境変数管理を整える。
+- [x] (2026-01-06 17:20Z) Supabaseスキーマを `supabase/schema.sql` に追加し、保護者・児童・出欠・メッセージログのDDLとサンプルデータ、ユニーク制約・参照整合性・インデックスを整備。
+- [x] (2026-01-06 17:20Z) 環境変数テンプレート `.env.example` を作成し、Supabase/LINE設定とモックUIフラグを明示。Supabaseクライアントをサーバー/ブラウザで分離して初期化する `src/lib/supabase/server.ts`・`client.ts` を追加。
+- [x] Supabaseスキーマ（保護者・児童・出欠・メッセージログ）を定義し、適用手順と環境変数管理を整える。
 - [ ] LINE LIFF用フロントエンド（本番向け）と模擬フロントエンド（ローカル検証向け）を実装し、出欠申請APIと接続する。
 - [ ] ダッシュボードSPAを実装し、一覧・統計・メッセージ送受信UIを提供する。模擬フロントエンドへのリンクを目立たない形で配置する。
 - [ ] 統合動作確認（ローカル／Vercel）、受入基準を満たすテスト手順を固める。
@@ -23,6 +25,7 @@ This ExecPlan is a living document. The sections Progress, Surprises & Discoveri
   Evidence: dev 起動ログに ENETUNREACH のスタックトレースが出た後に "Ready in 2.5s" が表示された（2026-01-06 実行）。
 - Observation: `npm run lint` で TypeScript 5.5.4 が @typescript-eslint の公式サポート範囲外という警告が表示される。
   Evidence: lint 実行ログに SUPPORTED TYPESCRIPT VERSIONS >=4.7.4 <5.5.0, YOUR TYPESCRIPT VERSION 5.5.4 と出力（2026-01-06 実行）。
+- Note: `npm run dev -- --hostname 0.0.0.0 --port 3000` は Ready が出たら停止せず、そのまま別ターミナルで作業を続行する。ポート競合がない限りサーバーを落とさないことで、手動検証を継続できる。
 
 ## Decision Log
 
