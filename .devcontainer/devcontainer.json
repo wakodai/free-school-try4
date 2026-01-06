@@ -1,0 +1,13 @@
+{
+  "name": "free-school-try4",
+  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "containerEnv": {
+    "CODEX_HOME": "${containerWorkspaceFolder}/.codex"
+  },
+  "remoteUser": "vscode"
+}
